@@ -12,7 +12,7 @@ resource "aws_ecs_task_definition" "ecs-td" {
   cpu    = "1024"
   memory = "3072"
 
-  execution_role_arn = aws_iam_role.ecs_task_execution.arn
+  execution_role_arn = "arn:aws:iam::926878603132:role/ecsTaskExecutionRole"
 
   container_definitions = jsonencode([
     {
@@ -34,3 +34,5 @@ resource "aws_ecs_task_definition" "ecs-td" {
     cpu_architecture        = "X86_64"
   }
 }
+
+# create service

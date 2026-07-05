@@ -16,14 +16,14 @@ resource "aws_lb" "ecs_project_alb" {
 
 # Create target group
 resource "aws_lb_target_group" "ecs_target_group" {
-  name        = "ecs_target_group"
+  name        = "ecs-target-group"
   port        = 443
   protocol    = "HTTPS"
   target_type = "ip"
-  vpc_id      = aws_vpc.ecs-vpc.id
+  vpc_id      = var.vpc_id
   health_check {
     protocol = "HTTP"
-    path = "health"
+    path = "/health"
 
   }
 }
@@ -31,13 +31,13 @@ resource "aws_lb_target_group" "ecs_target_group" {
 
 # Add listener
 resource "aws_lb_listener" "https_listener" {
-  load_balancer_arn = aws_lb.ecs_project_alb
+  load_balancer_arn = aws_lb.ecs_project_alb.arn
   port              = "443"
   protocol          = "HTTPS"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.ecs_target_group
+    target_group_arn = aws_lb_target_group.ecs_target_group.arn
   }
 }
 
@@ -46,7 +46,7 @@ resource "aws_lb_listener" "https_listener" {
 resource "aws_security_group" "alb-sg" {
   name        = "alb-sg"
   description = "Allow inbound traffic from port 80 and 443"
-  vpc_id      = aws_vpc.ecs-vpc_id
+  vpc_id      = var.vpc_id
 
   tags = {
     Name = "allow_tls"
