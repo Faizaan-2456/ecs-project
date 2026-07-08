@@ -12,12 +12,12 @@ resource "aws_ecs_task_definition" "ecs-td" {
   cpu    = "1024"
   memory = "3072"
 
-  execution_role_arn = "arn:aws:iam::926878603132:role/ecsTaskExecutionRole"
+  execution_role_arn = var.execution_role_arn
 
   container_definitions = jsonencode([
     {
-      name      = "threatmod"
-      image     = "926878603132.dkr.ecr.eu-west-2.amazonaws.com/ecs-project:latest"
+      name      = var.image_name
+      image     = var.image
       essential = true
 
       portMappings = [
