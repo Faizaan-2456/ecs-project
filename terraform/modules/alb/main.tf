@@ -5,7 +5,6 @@ resource "aws_lb" "ecs_project_alb" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb-sg.id]
   subnets            = [var.public-subnet-1, var.public-subnet-2]
-
   tags = {
     Environment = "production"
   }
@@ -30,8 +29,11 @@ resource "aws_lb_target_group" "ecs_target_group" {
 # Add listener
 resource "aws_lb_listener" "https_listener" {
   load_balancer_arn = aws_lb.ecs_project_alb.arn
-  port              = "80"
-  protocol          = "HTTP"
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy = var.ssl_policy
+  certificate_arn = var.certificate_arn
+
 
   default_action {
     type             = "forward"

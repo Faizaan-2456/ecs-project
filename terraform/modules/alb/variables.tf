@@ -24,3 +24,14 @@ variable "allow_all_traffic_ipv4" {
     default = "0.0.0.0/0"
   
 }
+
+variable "certificate_arn" {
+  description = "route 53 domain certificate"
+  type = string
+}
+
+variable "ssl_policy" {
+  description = "ssl policy"
+  type = string
+  default = "ELBSecurityPolicy-2016-08"
+}
