@@ -13,6 +13,11 @@ variable "public-subnet-1" {
   type = string
 }
 
+variable "public-subnet-2" {
+  description = "public-subnet-2"
+  type = string
+}
+
 variable "allow_all_traffic_ipv4" {
     description = "cidr 0.0.0.0/0 allow all traffic"
     type = string
