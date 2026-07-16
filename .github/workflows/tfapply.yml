@@ -1,3 +1,17 @@
+name: terraform apply
+
+on:
+  push:
+    branches:
+      -main
+  workflow_dispatch:
+    inputs:
+       confirm:
+         description: "Push docker image? Type yes to proceed"
+         required: true
+         type: string
+
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
