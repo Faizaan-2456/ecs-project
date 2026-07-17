@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
        confirm:
-         description: "Push docker image? Type yes to proceed"
+         description: "do you want to apply terraform? Type yes to proceed"
          required: true
          type: string
 
