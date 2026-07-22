@@ -33,6 +33,12 @@ COPY --from=builder /app/public /app/public
 # Installs package globally on system and 'serve' is the executable that starts the web server
 RUN yarn global add serve
 
+# Change ownership
+RUN chown -R node:node /app
+
+# Switch user from root to node
+USER node
+
 EXPOSE 3000
 
 # serve is the executable yarn uses to serve the application 
