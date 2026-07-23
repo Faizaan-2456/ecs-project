@@ -4,21 +4,17 @@
 This project deploys a Dockerised application to AWS ECS Fargate using Terraform. The infrastructure includes an Application Load Balancer, Route 53 DNS, an ACM SSL certificate, Amazon ECR for container images, and GitHub Actions for automated deployments.
 
 ## Architecture
+![alt text](<Screenshot 2026-07-23 at 13.42.26.png>)
 
 ## Key Features
-- Light weight Docker image 
+- Lightweight Docker image
 - tf state backend ensuring access across teams
+- Utilised Terraform to automate the deployment of AWS infrastructure
 - CI/CD pipeline to automate docker image push
 - Serverless tasks definition using Fargate
-
-Docker
-AWS ECS Fargate
-Amazon ECR
-Applicaiton Load Balancer
-Route 53
-AWS Certificate Manager
-Terraform
-GitHub Actions
+- Utilised Amazon Route 53 to manage DNS records and route traffic from a custom domain to the Application Load Balancer.
+- Configured an Application Load Balancer to route incoming HTTPS requests to healthy ECS tasks using target groups and health checks.
+- AWS Certificate Manager to provision and manage an SSL/TLS certificate, enabling secure HTTPS communication for the application.
 
 ## Project Structure
 
@@ -47,17 +43,25 @@ GitHub Actions
 └── variables.tf
 ```
 
+## Docker 
+- Multi-stage docker file reducing image size by more than 80%
+- Non root user preventing root access mitigating any security risks
 
+## Terraform 
+- Private VPC created with 2 public subnets configured in 2 different AZs for high availablility
+- Utilised modules for reusability and better organisation
+- State stored in S3
+- Used variables to abide by the DRY principle
 
-## Docker - Multi-stage docker file used to create a lightweight image
+## Infrastructure
+- Docker image stored in ECR repository and pulled once container gets built
+- ALB configured with security groups acting as a public entry point
+- Listener listens for incoming HTTPS requests on port 443 and forwards requests to target group
+- Target group routes traffic to healthy ECS Fargate tasks and performs health checks on /health
+- Route 53 hosts the domain and routes traffic to the Application Load Balancer
+- AWS Certificate Manager (ACM) provides and manages the SSL/TLS certificate, enabling secure HTTPS connections
 
-Terraform - Private VPC created with 2 public subnets configured in 2 different AZs for high availablility.
-ECS cluster deployed and task definition created to define how container should be run with fargate service for no server management.
-Docker image stored in ECR repository and pulled once container gets built
-ALB configured with security groups acting as a public entry point.
-Listener listens for incoming HTTPS requests on port 443 and forwards requests to target group.
-Target group routes this traffic to healthy ECS Fargate tasks and performs health checks
-Route 53 hosts the domain and routes traffic to the Application Load Balancer.
-AWS Certificate Manager (ACM) provides and manages the SSL/TLS certificate, enabling secure HTTPS connections.
-
-CI/CD - GitHub Actions configured to ensure the lastest docker image gets pushed into the ECR repository. ECS service gets updated to deploy the lastest container
+## CI/CD 
+- Uses OIDC over hardcoded access keys for short lived credentials
+- Automates the deployment of the docker image to ECR
+- Manual workflows to prevent unecessary changes
