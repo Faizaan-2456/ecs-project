@@ -5,6 +5,7 @@ data "aws_route53_zone" "hosted_zone" {
 
 resource "aws_acm_certificate" "cert" {
   domain_name       = "faizaanrashid.uk"
+  subject_alternative_names = ["www.faizaanrashid.uk"]
   validation_method = "DNS"
 
   lifecycle {
@@ -20,6 +21,18 @@ resource "aws_route53_record" "app_record" {
   alias {
     name = var.alb_dns_name
     zone_id = var.alb_zone_id
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_route53_record" "root_record" {
+  zone_id = data.aws_route53_zone.hosted_zone.zone_id
+  name    = "faizaanrashid.uk"
+  type    = "A"
+
+  alias {
+    name                   = var.alb_dns_name
+    zone_id                = var.alb_zone_id
     evaluate_target_health = true
   }
 }

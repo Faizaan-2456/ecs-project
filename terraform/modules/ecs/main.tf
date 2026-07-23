@@ -67,7 +67,7 @@ resource "aws_vpc_security_group_egress_rule" "service_sg_egress" {
 resource "aws_ecs_service" "ecs_td_service" {
   name            = "ecs-td-service"
   cluster         = aws_ecs_cluster.ecs-project.id
-  task_definition = aws_ecs_task_definition.ecs-td.id
+  task_definition = aws_ecs_task_definition.ecs-td.arn
   desired_count   = 3
   launch_type = "FARGATE"
 
