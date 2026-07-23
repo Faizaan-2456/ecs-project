@@ -3,6 +3,8 @@
 ## Overview
 This project deploys a Dockerised application to AWS ECS Fargate using Terraform. The infrastructure includes an Application Load Balancer, Route 53 DNS, an ACM SSL certificate, Amazon ECR for container images, and GitHub Actions for automated deployments.
 
+![alt text](<Screenshot 2026-07-23 at 18.36.14-2.png>)
+
 ## Architecture
 ![alt text](<Screenshot 2026-07-23 at 13.42.26.png>)
 
@@ -65,3 +67,19 @@ This project deploys a Dockerised application to AWS ECS Fargate using Terraform
 - Uses OIDC over hardcoded access keys for short lived credentials
 - Automates the deployment of the docker image to ECR
 - Manual workflows to prevent unecessary changes
+![alt text](<Screenshot 2026-07-23 at 18.45.00.png>)
+
+## Local Setup
+```
+yarn install
+yarn build
+yarn global add serve
+serve -s build
+
+#yarn start
+http://localhost:3000/workspaces/default/dashboard
+
+## or
+yarn global add serve
+serve -s build
+```
